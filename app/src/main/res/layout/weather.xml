@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/changecitybutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="北京"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" />
+
+    <ImageView
+        android:id="@+id/pngtype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/qingtian"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_below="@+id/changecitybutton"/>
+
+    <TextView
+        android:id="@+id/text_wendu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="温度"
+        android:layout_toRightOf="@+id/text_name"
+        android:layout_alignBottom="@+id/text_name"
+        />
+    <TextView
+        android:id="@+id/text_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/pngtype"
+        android:layout_alignStart="@+id/pngtype"
+        android:textSize="20dp"
+        android:text="北京"/>
+    <TextView
+        android:id="@+id/text_fengxiang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:paddingLeft="0dp"
+        android:layout_below="@+id/text_wendu"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:id="@+id/text_ganmao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text=" "
+
+        android:layout_below="@+id/text_fengxiang" />
+
+    <HorizontalScrollView
+        android:id="@+id/hscroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true">
+            <RelativeLayout
+                android:layout_width="160dp"
+                android:layout_height="160dp">
+
+                <ImageView
+                    android:id="@+id/firpng"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/qingtian"
+                    android:scaleType="fitXY"
+                    />
+                <TextView
+                    android:id="@+id/firdayinfo"
+                    android:layout_width="160dp"
+                    android:layout_height="80dp"
+                    android:textSize="15dp"
+                    android:text="今天信息"
+                    android:padding="10dp"
+                    android:layout_below="@+id/firpng" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="160dp"
+                android:layout_height="160dp">
+
+                <ImageView
+                    android:id="@+id/secpng"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/zhongyu"
+                    android:scaleType="fitXY"/>
+
+                <TextView
+                    android:id="@+id/secdayinfo"
+                    android:layout_width="160dp"
+                    android:layout_height="80dp"
+                    android:textSize="15dp"
+                    android:text="明天信息"
+                    android:padding="10dp"
+                    android:layout_below="@+id/secpng"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="160dp"
+                android:layout_height="160dp">
+
+                <ImageView
+                    android:id="@+id/thrpng"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/zhongyu"
+                    android:scaleType="fitXY"/>
+
+                <TextView
+                    android:id="@+id/thrdayinfo"
+                    android:layout_width="160dp"
+                    android:layout_height="80dp"
+                    android:textSize="15dp"
+                    android:text="后天信息"
+                    android:padding="10dp"
+                    android:layout_below="@+id/thrpng"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="160dp"
+                android:layout_height="160dp">
+
+                <ImageView
+                    android:id="@+id/foupng"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/xiaoyu"
+                    android:scaleType="fitXY"/>
+
+                <TextView
+                    android:id="@+id/foudayinfo"
+                    android:layout_width="160dp"
+                    android:layout_height="80dp"
+                    android:textSize="15dp"
+                    android:text="大后天信息"
+                    android:padding="10dp"
+                    android:layout_below="@+id/foupng"/>
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="160dp"
+                android:layout_height="160dp">
+
+                <ImageView
+                    android:id="@+id/fifpng"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/qingtian"
+                    android:scaleType="fitXY"/>
+
+                <TextView
+                    android:id="@+id/fifdayinfo"
+                    android:layout_width="160dp"
+                    android:layout_height="80dp"
+                    android:textSize="15dp"
+                    android:text="大大后天信息"
+                    android:padding="10dp"
+                    android:layout_below="@+id/fifpng"/>
+            </RelativeLayout>
+
+
+
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</RelativeLayout>

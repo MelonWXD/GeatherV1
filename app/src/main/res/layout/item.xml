@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dip"
+    android:paddingBottom="4dip"
+    android:paddingLeft="8dip"
+    android:paddingRight="8dip" >
+    <TextView
+        android:id="@+id/name_sheng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dip"
+        android:text="xx省"
+
+        />
+
+
+    <TextView
+        android:id="@+id/name_shi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dip"
+        android:text="xx市"
+        android:paddingRight="12dip"
+        android:layout_toRightOf="@+id/name_sheng"/>
+
+    <TextView
+        android:id="@+id/name_qu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dip"
+        android:text="xx区"
+        android:paddingRight="12dip"
+        android:layout_toRightOf="@+id/name_shi"/>
+
+    <TextView
+        android:id="@+id/CityID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+</RelativeLayout>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/welcomepage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/kobe"
+        android:scaleType="fitXY"
+        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center">
+
+        <Button
+            android:id="@+id/CityButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="点此选择城市"
+            android:layout_below="@+id/CityName"/>
+        <Button
+            android:id="@+id/Enter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/CityButton"
+            android:layout_alignBottom="@+id/CityButton"
+            android:text="确定"/>
+
+        <TextView
+            android:id="@+id/CityName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textSize="20dp"
+            android:textColor="#00FF00"
+            android:text="你TM没选城市，傻逼！"/>
+    </RelativeLayout>
+
+
+
+</FrameLayout>
