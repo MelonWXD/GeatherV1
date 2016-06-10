@@ -39,7 +39,6 @@ public class SelectCity extends Activity {
         SQLiteDatabase mDb = openOrCreateDatabase("cityname.db",
                 SQLiteDatabase.CREATE_IF_NECESSARY, null);
         Cursor mCursor = mDb.rawQuery("select * from " + "t_city", null);
-
         mCityDb = new CityDb();
         mCityData = mCityDb.InitCityList(mCursor);
 

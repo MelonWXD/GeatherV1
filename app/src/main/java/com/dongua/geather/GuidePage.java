@@ -25,11 +25,13 @@ public  class GuidePage extends Activity {
     Button CityButton;
     Button YesButton;
     TextView NameText;
-    String strName="未选择城市";
-    String strID;
+    String strName="北京";
+    String strID="101010100";
     String strNameEn;
     String NameResult;
 
+    private static final String SHAREDPREFERENCES_NAME = "data";
+    private static final String KEY_GUIDE_ACTIVITY = "IsFirst";
 
 
 
@@ -37,40 +39,10 @@ public  class GuidePage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.guidepage);
-        /**在这里插入SQLite拷贝到SD卡的函数*/
-        String DB_PATH = "/data/data/com.dongua.geather/databases/";
-        String DB_NAME = "cityname.db";
-        // 检查 SQLite 数据库文件是否存在
-        if ((new File(DB_PATH + DB_NAME)).exists() == false) {
-            // 如 SQLite 数据库文件不存在，再检查一下 database 目录是否存在
-            File f = new File(DB_PATH);
-            // 如 database 目录不存在，新建该目录
-            if (!f.exists()) {
-                f.mkdir();
-            }
 
-            try {
-                // 得到 assets 目录下我们实现准备好的 SQLite 数据库作为输入流
-                InputStream is = getBaseContext().getAssets().open(DB_NAME);
-                // 输出流
-                OutputStream os = new FileOutputStream(DB_PATH + DB_NAME);
 
-                // 文件写入
-                byte[] buffer = new byte[1024];
-                int length;
-                while ((length = is.read(buffer)) > 0) {
-                    os.write(buffer, 0, length);
-                }
-
-                // 关闭文件流
-                os.flush();
-                os.close();
-                is.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
+        //复制数据库到/data/data/.../databases
+        creatDb();
 
         CityButton = (Button)findViewById(R.id.CityButton);
         CityButton.setOnClickListener(new CityButtonListener());
@@ -78,10 +50,19 @@ public  class GuidePage extends Activity {
         YesButton = (Button)findViewById(R.id.Enter);
         YesButton.setOnClickListener(new YesButtonListener());
 
+
+
         boolean mFirst = isFirstEnter(GuidePage.this,GuidePage.this.getClass().getName());
         if(!mFirst){
             mHandler.sendEmptyMessage(SWITCH_WEATHER);
         }
+        else{
+            setSpf();//设置SharedPreferences 保存strName strID
+            Intent intent =new Intent(GuidePage.this,Weather.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
 
@@ -116,7 +97,7 @@ public  class GuidePage extends Activity {
         @Override
         public void onClick(View v) {
             Intent intent =new Intent(GuidePage.this,SelectCity.class);
-            startActivityForResult(intent,1);
+//            startActivityForResult(intent,1);
         }
     }
     class YesButtonListener implements View.OnClickListener{
@@ -140,11 +121,10 @@ public  class GuidePage extends Activity {
         }
     }
 
-    private static final String SHAREDPREFERENCES_NAME = "my_pref";
-    private static final String KEY_GUIDE_ACTIVITY = "guide_activity";
+
     private boolean isFirstEnter(Context context,String className){
         if(context==null || className==null||"".equalsIgnoreCase(className))return false;
-        String mResultStr = context.getSharedPreferences(SHAREDPREFERENCES_NAME, Context.MODE_WORLD_READABLE)
+        String mResultStr = context.getSharedPreferences(SHAREDPREFERENCES_NAME, Context.MODE_PRIVATE)
                 .getString(KEY_GUIDE_ACTIVITY, "");//取得所有类名 如 com.my.MainActivity
         if(mResultStr.equalsIgnoreCase("false"))
             return false;
@@ -170,4 +150,48 @@ public  class GuidePage extends Activity {
         }
     };
 
+
+    private void creatDb(){
+        /**在这里插入SQLite拷贝到SD卡的函数*/
+        String DB_PATH = "/data/data/com.dongua.geather/databases/";
+        String DB_NAME = "cityname.db";
+        // 检查 SQLite 数据库文件是否存在
+        if ((new File(DB_PATH + DB_NAME)).exists() == false) {
+            // 如 SQLite 数据库文件不存在，再检查一下 database 目录是否存在
+            File f = new File(DB_PATH);
+            // 如 database 目录不存在，新建该目录
+            if (!f.exists()) {
+                f.mkdir();
+            }
+
+            try {
+                // 得到 assets 目录下我们实现准备好的 SQLite 数据库作为输入流
+                InputStream is = getBaseContext().getAssets().open(DB_NAME);
+                // 输出流
+                OutputStream os = new FileOutputStream(DB_PATH + DB_NAME);
+
+                // 文件写入
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = is.read(buffer)) > 0) {
+                    os.write(buffer, 0, length);
+                }
+
+                // 关闭文件流
+                os.flush();
+                os.close();
+                is.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private void setSpf(){
+        SharedPreferences.Editor editor = getSharedPreferences(SHAREDPREFERENCES_NAME,MODE_PRIVATE).edit();
+        editor.putString("CityName",strName);
+        editor.putString("CityID",strID);
+        editor.commit();
+    }
 }

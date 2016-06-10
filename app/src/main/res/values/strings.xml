@@ -1,4 +1,14 @@
 <resources>
 
     <string name="app_name">冬瓜天气</string>
+    <string name="qing">晴</string>
+    <string name="duoyun">多云</string>
+    <string name="yin">阴</string>
+    <string name="xiaoyu">小雨</string>
+    <string name="zhongyu">中雨</string>
+    <string name="dayu">大雨</string>
+    <string name="zhenyu">阵雨</string>
+    <string name="xiaozhongyu">小到中雨</string>
+    <string name="leizhenyu">雷阵雨</string>
+
 </resources>
