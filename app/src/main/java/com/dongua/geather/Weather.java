@@ -11,14 +11,17 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +51,7 @@ public class Weather extends AppCompatActivity {
     final String WEATHER_URL ="http://wthrcdn.etouch.cn/weather_mini?citykey=";
     HorizontalListView mainListView;
     SimpleAdapter mainAdapter;
+    WindowManager windowManager;
 
     ArrayList<Map<String,Object>> mainList = new ArrayList<Map<String,Object>>();
     int Rfirpng;
@@ -55,6 +59,8 @@ public class Weather extends AppCompatActivity {
     int Rthrpng;
     int Rfoupng;
     int Rfifpng;
+
+    RelativeLayout weatherlayout ;
 
 //    ArrayList<String> iconList = new ArrayList<String>();
 //    ArrayList<String> infoString = new ArrayList<String>();
@@ -86,6 +92,8 @@ public class Weather extends AppCompatActivity {
         setContentView(R.layout.mainpage);
 
 
+
+        weatherlayout=(RelativeLayout)findViewById(R.id.weatherlayout);
 
 
         text_wd =(TextView)findViewById(R.id.text_wendu);
@@ -124,6 +132,9 @@ public class Weather extends AppCompatActivity {
 
 
         mainListView=(HorizontalListView)findViewById(R.id.mainListView);
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        mainListView.setWindowsWidth(dm.widthPixels);
 
         String[] Keys = new String[]{"ftype","ftype","stype","ttype","fotype","fitype"
                 ,"name","wendu","fengxiang","ganmao","finfo","sinfo","tinfo","foinfo","fiinfo"};
@@ -145,6 +156,32 @@ public class Weather extends AppCompatActivity {
 
 
     public void saveListData(){ //保存数据
+        SharedPreferences.Editor editor = getSharedPreferences("ArrayData",MODE_PRIVATE).edit();
+        SharedPreferences getData = getSharedPreferences("ArrayData",MODE_PRIVATE);
+        int oldSize =getData.getInt("NUMBER",0);
+        editor.putInt("NUMBER",mainList.size());//已有的Item数目
+        for(int i=oldSize;i<mainList.size();i++){//把图片的R.ID存进去
+
+            editor.putInt("Item"+i+"ftype",(int)mainList.get(i).get("ftype"));
+            editor.putInt("Item"+i+"stype",(int)mainList.get(i).get("stype"));
+            editor.putInt("Item"+i+"ttype",(int)mainList.get(i).get("ttype"));
+            editor.putInt("Item"+i+"fotype",(int)mainList.get(i).get("fotype"));
+            editor.putInt("Item"+i+"fitype",(int)mainList.get(i).get("fitype"));
+            editor.putString("Item"+i+"name",(String)mainList.get(i).get("name"));
+            editor.putString("Item"+i+"ID",(String)mainList.get(i).get("ID"));
+            editor.putString("Item"+i+"wendu",(String)mainList.get(i).get("wendu"));
+            editor.putString("Item"+i+"fengxiang",(String)mainList.get(i).get("fengxiang"));
+            editor.putString("Item"+i+"ganmao",(String)mainList.get(i).get("ganmao"));
+            editor.putString("Item"+i+"finfo",(String)mainList.get(i).get("finfo"));
+            editor.putString("Item"+i+"sinfo",(String)mainList.get(i).get("sinfo"));
+            editor.putString("Item"+i+"tinfo",(String)mainList.get(i).get("tinfo"));
+            editor.putString("Item"+i+"foinfo",(String)mainList.get(i).get("foinfo"));
+            editor.putString("Item"+i+"fiinfo",(String)mainList.get(i).get("fiinfo"));
+        }
+        editor.commit();
+    }
+
+    public void saveAfterRemove(){ //保存数据
         SharedPreferences.Editor editor = getSharedPreferences("ArrayData",MODE_PRIVATE).edit();
         editor.putInt("NUMBER",mainList.size());//已有的Item数目
         for(int i=0;i<mainList.size();i++){//把图片的R.ID存进去
@@ -169,7 +206,7 @@ public class Weather extends AppCompatActivity {
     }
     public void getListData(){ //获取数据
         SharedPreferences getData = getSharedPreferences("ArrayData",MODE_PRIVATE);
-        int Size =getData.getInt("NUMBER",0);//若取不到NUMBER值 则默认为0
+        int Size =getData.getInt("NUMBER", 0);//若取不到NUMBER值 则默认为0
         for(int i=0;i<Size;i++){
             HashMap<String,Object> item = new HashMap<String,Object>();
 
@@ -209,13 +246,15 @@ public class Weather extends AppCompatActivity {
             case Menu.FIRST+1:
                 Intent intent = new Intent(Weather.this,SelectCity.class);
                 startActivityForResult(intent,1);//回调函数里JSON数据解析 add了
+
                 break;
             case Menu.FIRST+2:
                 int ItemPos = -mainListView.mDisplayOffset/1000;//获取准确子Item位置
                 if(ItemPos>=0 && mainList.size()>1){
                     mainList.remove(ItemPos);
+                    saveAfterRemove();
                     mainAdapter.notifyDataSetChanged();
-                    saveListData();
+
                 }
                 else{
                     Toast.makeText(Weather.this,"请至少保留一个城市",Toast.LENGTH_LONG).show();
@@ -249,8 +288,9 @@ public class Weather extends AppCompatActivity {
         public void run() {
             WeatherUrl = WEATHER_URL+ strID;
             sendRequestWithHttpURLConnection();
-            saveListData();
-            //saveListData();
+
+//            saveListData();
+//            //saveListData();
         }
     };
 
@@ -383,10 +423,10 @@ public class Weather extends AppCompatActivity {
             item.put("foinfo",foinfo);
             item.put("fiinfo",fiinfo);
             mainList.add(item);
+            saveListData();
 
 
             mainAdapter.notifyDataSetChanged();
-
 
 
 
@@ -473,12 +513,16 @@ public class Weather extends AppCompatActivity {
             return (R.drawable.dayu);
         else if (getString(R.string.zhenyu).equals(text))
             return (R.drawable.zhenyu);
-        else if (getString(R.string.xiaozhongyu).equals(text))
-            return (R.drawable.xiaoyu);
         else if (getString(R.string.leizhenyu).equals(text))
             return (R.drawable.leizhenyu);
+        else if (getString(R.string.xiaodaozhongyu).equals(text))
+            return (R.drawable.xiaoyu);
+        else if (getString(R.string.zhongdaodayu).equals(text))
+            return (R.drawable.zhongyu);
+        else if (getString(R.string.dadaobaoyu).equals(text))
+            return (R.drawable.dayu);
         else
-            return (R.drawable.qingtian);
+            return (R.drawable.error);
     }
 
 

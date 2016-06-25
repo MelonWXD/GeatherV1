@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.Scroller;
@@ -35,10 +36,14 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     private boolean mDataChanged = false;
     private boolean ViewScroller = true;
 
-    private float dy;
-    public int mPosnow=1;
-    private float x1,x2=0,dx;
 
+    public int windowsWidth;
+
+    private float dy;
+
+    public void setWindowsWidth(float x){
+        windowsWidth = (int)x;
+    }
 
     public HorizontalListView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -54,15 +59,14 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         mMaxX = Integer.MAX_VALUE;
         mScroller = new Scroller(getContext());
         mGesture = new GestureDetector(getContext(), mOnGesture);
+
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        x1 = ev.getRawX();
-        //x2 = 0;
-//        x1=0;x2=0;dx=0;
+
         dy = ev.getRawY();
-        if(dy<1119){
+        if(dy<1224){
 //            dx=x1-x2;
 //            x2=x1;
 //            if(dx>200){//滑动超过一定距离就setselection
@@ -308,6 +312,10 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         mScroller.startScroll(mNextX, 0, x - mNextX, 0);
         requestLayout();
     }
+    public synchronized void scrollTo(int x,int dura) {
+        mScroller.startScroll(mNextX, 0, x - mNextX, 0,dura);
+        requestLayout();
+    }
 
 
 
@@ -337,7 +345,20 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                                float velocityY) {
 
-            return HorizontalListView.this.onFling(e1, e2, velocityX, velocityY);
+
+            int isHalfItem ;
+            if(velocityX<0){//向左滑动
+                isHalfItem=(int) (-mDisplayOffset+0.7*windowsWidth)/1000;
+            }
+            else{
+                isHalfItem=(int) (-mDisplayOffset+0.25*windowsWidth)/1000;
+            }
+            int pos= isHalfItem*windowsWidth;
+
+            scrollTo(pos,500);
+            return true;
+
+            //return HorizontalListView.this.onFling(e1, e2, velocityX, velocityY);
         }
 
         @Override

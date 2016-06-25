@@ -8,7 +8,9 @@
     <string name="zhongyu">中雨</string>
     <string name="dayu">大雨</string>
     <string name="zhenyu">阵雨</string>
-    <string name="xiaozhongyu">小到中雨</string>
     <string name="leizhenyu">雷阵雨</string>
+    <string name="xiaodaozhongyu">小到中雨</string>
+    <string name="zhongdaodayu">中到大雨</string>
+    <string name="dadaobaoyu">大到暴雨</string>
 
 </resources>
